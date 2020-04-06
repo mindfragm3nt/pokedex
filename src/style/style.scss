@@ -1,5 +1,147 @@
 @import 'colors.scss';
+@import 'resolutionMixins.scss';
+@import 'leds.scss';
+
+* {
+  padding: 0;
+  margin: 0;
+}
 
 body {
-  background-color: $backgroundColor;
+  background-color: $backgroundColor !important;
+  overflow: hidden;
+}
+
+.main-wrapper {
+  display: grid;
+  grid-template-rows: 0.5fr 60px repeat(2, 1fr) 50px;
+  grid-template-columns: 20px repeat(2, 1fr) 20px;
+  width: 100vw;
+  height: 100vh;
+}
+
+header {
+  grid-column: 1 / 5;
+  grid-row: 1;
+  
+  #header-wrapper {
+    position: fixed;
+    width: 100vw;
+    height: 70px;
+    background-color: $mainColor;
+    z-index: 1;
+
+    @include small-smartphone;
+  }
+
+  #header-block {
+    position: relative;
+    display: block;
+    top: 70px;
+    width: 20vh;
+    height: 5vh;
+    background-color: $mainColor;
+    clip-path: polygon(100% 0, 100% 0, 65% 100%, 0 100%, 0 0);
+    z-index: 1;
+
+    @include small-smartphone;
+  }
+
+  #header-wrapper-shadow {
+    position: fixed;
+    width: 100vw;
+    height: 40px;
+    background-color: $borders;
+    opacity: .3;
+  }
+
+  #header-block-shadow {
+    position: relative;
+    top: 40px;
+    width: 20vh;
+    height: 5vh;
+    background-color: $borders;
+    opacity: .3;
+    clip-path: polygon(100% 0, 100% 0, 65% 100%, 0 100%, 0 0);
+  }
+
+  #logo {
+
+  }
+
+}
+
+main {
+  grid-column: 2 / 4;
+  grid-row: 3;
+  width: 80vw;
+  height: 70vh;
+  justify-self: center;
+  background-color: $border2;
+  border-radius: 6px;
+
+  #main-content-wrapper {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 20px 1fr 20px;
+    grid-template-columns: 20px 1fr 20px;
+    border: 1px solid $borders;
+    border-radius: 6px;
+
+    #border-screen-led {
+      grid-area: 1 / 2;
+      width: 100%;
+      height: 20px;
+
+      display: flex;
+      justify-content: flex-end;
+
+      #border-led-1 {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background-color: $ledScreenBorderLeft;
+        border: 1px solid $borders;
+        border-radius: 10px;
+        margin: 3px;
+      }
+
+      #border-led-2 {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background-color: $ledScreenBorderRight;
+        border: 1px solid $borders;
+        border-radius: 10px;
+        margin: 3px;
+      }
+    }
+
+    #screen {
+      grid-column: 2;
+      width: auto;
+      height: 100%;
+      border-radius: 6px;
+      background-color: $pokedexScreen;
+      box-shadow: inset 0 -10px 10px -10px $bordersShadow;
+    }
+  }
+}
+
+footer {
+  grid-row: 5;
+  width: 100vw;
+  height: 50px;
+  left: 0;
+  bottom: 0;
+  background-color: $mainColor;
+
+  p {
+    padding: 10px;
+    padding-right: 20px;
+    text-align: end;
+    color: $footerText;
+    box-shadow: 0 -10px 10px -10px $bordersShadow;
+    opacity: .3;
+  }
 }
