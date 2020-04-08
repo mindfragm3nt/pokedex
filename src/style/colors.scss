@@ -1,14 +1,30 @@
-$backgroundColor: #1a5a12;
-// $mainColor: #d42828; pozniej aktywoawc
-$mainColor: #1f6815;
+$backgroundColor: #881510;
+$mainColor: #A91510;
 // $borders: rgba(70, 70, 70);
 $borders: rgb(56, 56, 56);
 $bordersShadow: rgba(0, 0, 0, 0.486);
-$border2: #7a7a7a;
+$border2: #5c5c5c;
 $pokedexScreenFrame: #575757;
 $pokedexScreen: #29215a;
 
-$ledScreenBorderLeft: #ffbf0e;
-$ledScreenBorderRight: #ff3c3c;
+// main LEDs
+$ledMainBig: #2257ca;
+$ledMainLeft1: #df7272;
+$ledMainLeft2: #d81616;
 
-$footerText: #e6c81e;
+$ledMainMid1: #ffe69d;
+$ledMainMid2: #ffbf0e;
+
+$ledMainRight1: #4dd64f;
+$ledMainRight2: #0f9912;
+
+$ledScreenBorderLeft1: #ffd96f;
+$ledScreenBorderLeft2: #ffbf0e;
+
+$ledScreenBorderRight1: #ff6e6e;
+$ledScreenBorderRight2: #ff3c3c;
+
+$ledBorder: #a5a5a5;
+
+// $footerText: #e6c81e;
+$footerText: #ffd900;

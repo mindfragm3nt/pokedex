@@ -6,13 +6,14 @@
   <title>Document</title>
   <link rel="stylesheet" href="./src/style/style.css">
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
-  <script src="/dist/bundle.js"></script>
+  <!-- <script src="/dist/bundle.js" defer></script> -->
+  <script src="/src/scripts/testowySkryptUsunac.js" defer></script>
 </head>
 <body>
   <div class="main-wrapper">
     <header>
-      <div id="header-wrapper">
-        <div id="led-panel">
+      <div id="header-bar">
+        <div id="led-wrapper">
           <div id="led-big"></div>
           <div id="led-small-left" class="small-led"></div>
           <div id="led-small-mid" class="small-led"></div>
@@ -20,11 +21,7 @@
         </div>
         <div id="logo"></div>
       </div>
-      <div id="header-block">
-      </div>
-      <div id="header-wrapper-shadow">
-      </div>
-      <div id="header-block-shadow">
+      <div id="header-bar-shadow">
       </div>
     </header>
     <main>
@@ -34,7 +31,10 @@
           <div id="border-led-2"></div>
         </div>
         <div id="screen">
-          
+          <div id="pokemon-name-label"></div>
+          <div id="loupe-search">
+            <img id="loupe-image" src="./src/assets/images/loupe.svg">
+          </div>
         </div>
       </div>
     </main>
