@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,KAAK,AAAA,MAAM,CAAA;EACT,OAAO,EAAE,IAAI;CACd",
+    "sources": [
+        "embeddedElements.scss"
+    ],
+    "names": [],
+    "file": "embeddedElements.css"
+}
