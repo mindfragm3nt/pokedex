@@ -4,8 +4,8 @@
   "description": "pokedex task",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "start": "webpack-dev-server --output-public-path=/build/"
   },
   "repository": {
     "type": "git",
