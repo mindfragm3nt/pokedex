@@ -23,6 +23,7 @@
   "homepage": "https://github.com/brokenClock92/pokedex#readme",
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-regenerator": "^7.8.7",
     "@babel/preset-env": "^7.9.0",
     "babel-loader": "^8.1.0",
     "bootstrap": "^4.4.1",
