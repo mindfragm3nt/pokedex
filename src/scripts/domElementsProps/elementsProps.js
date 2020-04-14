@@ -46,7 +46,6 @@ function listOfPokemonsProps(pokemonsList) {
 function itemOfPokemonListProps(item, index) {
   item.id = `item-${index}`;
   item.className = 'pokemon-item'
-  // item.style.gridRow = `${index + 1}`;
 
   item.style.width = '100%';
   item.style.height = '50px';

@@ -1,0 +1,29 @@
+@media all and (min-width: 992px) {
+  .main-wrapper {
+    // margin: 14px;
+    transform: scale(.94);
+    border-radius: 6px;
+
+    #separator {
+      display: initial;
+    }
+  }
+
+
+
+  #header-bar {
+    border-radius: 6px 6px 0 0;
+  }
+
+  main {
+    grid-column: 2;
+  }
+
+  #picker {
+    display: initial;
+  }
+
+  footer {
+    border-radius: 0 0 6px 6px;
+  }
+}
