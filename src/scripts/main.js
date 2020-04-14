@@ -68,10 +68,8 @@ function creatingSearchInput() {
 
 async function listOfPokemons() {
   if(isLoupeClicked === false) {
-    let pokemonsArray = await apiData.getAllPokemonNames().then(result => {
-      
-      return result;
-    });
+    let pokemonsArray = await apiData.getAllPokemonNames()
+      .then( result => { return result; });
     
     const screenElement = document.getElementById('screen');
     let wrapper = document.createElement('div');
@@ -87,7 +85,7 @@ async function listOfPokemons() {
       
       elementsProps.itemOfPokemonListProps(item, i);
       item.innerHTML = `
-        <p class="pokemon-item-paragraph"
+        <p id="pokemon-item-paragraph-${i}"
           style="padding-left: 10px; margin: 0">${pokemonsArray[i].name}</p>
       `;
 
@@ -100,18 +98,26 @@ async function listOfPokemons() {
 
 async function unfocusSearchInput(event) {
   clickedPokemonItem = event.target;
+  console.log('clickedPokemonItem', clickedPokemonItem);
+  
+  removeWelcomeText(clickedPokemonItem);
+  
   try {
-    let pokemonName = clickedPokemonItem.children[0].innerText;
+    if(clickedPokemonItem.children[0] !== null) {
+      let pokemonName = clickedPokemonItem.children[0].innerText;
+    } else {
+      let pokemonName = clickedPokemonItem.innerText;
+    }
     let pokemon = await apiData.getPokemon(pokemonName).then(result => {
       return result;
     });
 
-
-
+    pokemonDataPresenter(pokemon);
+    console.log('pokemon', pokemon);
   } catch {
     console.log('Info: this element has no text value inside.');
   }
-  
+
   if(isLoupeClicked === true &&
     event.target !== loupeElement && 
     event.target !== document.getElementById('custom-input') &&
@@ -119,24 +125,41 @@ async function unfocusSearchInput(event) {
     event.target !== document.getElementById('pokemons-list-wrapper') &&
     event.target !== document.querySelector('input')
   ) {
-    const customInput = document.getElementById('custom-input');
-    const screen = document.getElementById('screen');
-    const input = document.querySelector('input');
-    const listWrapper = document.getElementById('pokemons-list-wrapper');
-    const welcomeText = document.getElementById('welcome-text');
-
-    loupeElement.style.background = 'url("src/assets/images/loupe-light.svg") no-repeat center center'
-    customInput.style.background = 'transparent';
-    document.getElementById('loupe-image-background').style.background = 'transparent';
-    customInput.removeChild(input);
-    screen.removeChild(listWrapper);
-    screen.removeChild(welcomeText);
-
-    isLoupeClicked = false;
-    // welcomeText();
+    hidePokemonList();
   }
 }
 
-function pokemonDataPresenter() {
-  
+function removeWelcomeText(target) {
+  if(document.getElementById('welcome-text') !== null &&
+    ( target.id.substring(0,5) === 'item-' ||
+      target.id.substring(0,23) === 'pokemon-item-paragraph-'
+    )
+  ) {
+    const screen = document.getElementById('screen');
+    const welcomeText = document.getElementById('welcome-text');
+
+    screen.removeChild(welcomeText);
+  }
+}
+
+function pokemonDataPresenter(pokemonData) {
+  const screen = getElementById('screen');
+  const pokemonNameEl = document.createElement('h3');
+  pokemonNameEl.innerText = pokemonData.name;
+}
+
+function hidePokemonList() {
+  const screen = document.getElementById('screen');
+  const customInput = document.getElementById('custom-input');
+  const input = document.querySelector('input');
+  const listWrapper = document.getElementById('pokemons-list-wrapper');
+
+  loupeElement.style.background = 'url("src/assets/images/loupe-light.svg") no-repeat center center'
+  customInput.style.background = 'transparent';
+  document.getElementById('loupe-image-background').style.background = 'transparent';
+
+  customInput.removeChild(input);
+  screen.removeChild(listWrapper);
+
+  isLoupeClicked = false;
 }
