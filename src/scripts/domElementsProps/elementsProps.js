@@ -28,13 +28,10 @@ function listOfPokemonsProps(pokemonsList) {
   pokemonsList.style.overflowY  = 'scroll';
   pokemonsList.style.gridRow = '2 / span 7';
   pokemonsList.style.gridColumn = '1 / span 8';
-  // pokemonsList.style.display = 'grid';
-  // pokemonsList.style.gridTemplateRows = 'repeat(auto, 50px)';
 
   pokemonsList.style.width = '93%';
   pokemonsList.style.maxHeight = '54vh';
   pokemonsList.style.padding = '10px';
-  // pokemonsList.style.row = '2';
 
   pokemonsList.style.color = 'black';
   pokemonsList.style.border = 'none';
@@ -55,4 +52,43 @@ function itemOfPokemonListProps(item, index) {
   item.style.borderBottom = '1px solid grey';
 }
 
-export default { welcomeTextProps, searchInputProps, listOfPokemonsProps, itemOfPokemonListProps };
+function dataPresenterProps(pokemonName, pokemonImage, pokemonTypeLabel, pokemonListType) {
+  pokemonName.style.gridRow = '1 / 7';
+  pokemonName.style.gridColumns = '1';
+  pokemonName.style.color = 'white';
+  pokemonName.style.fontWeight = 'bold';
+
+  pokemonImage.style.gridRow = '2/6';
+  pokemonImage.style.gridColumn = '1/9';
+  pokemonImage.style.justifySelf = 'center';
+  pokemonImage.style.width = '30vw';
+  pokemonImage.style.height = '32vh';
+  pokemonImage.style.minWidth = '264px';
+  pokemonImage.style.maxWidth = '323px';
+
+  pokemonTypeLabel.innerHTML = 'Type';
+  pokemonTypeLabel.style.gridRow = '5';
+  pokemonTypeLabel.style.gridColumn = '1/5';
+  pokemonTypeLabel.style.color = 'white';
+  pokemonTypeLabel.style.fontWeight = 'bold';
+  pokemonTypeLabel.style.marginLeft = '7%';
+
+  pokemonListType.style.gridRow = '6';
+  pokemonListType.style.gridColumn = '1';
+  pokemonListType.style.margin = '-30px 0 0 100%';
+}
+
+function liElementProps(element) {
+  element.style.color = 'white';
+  element.style.fontWeight = 'bold';
+  element.style.listStyleType = 'circle';
+}
+
+export default {
+  welcomeTextProps,
+  searchInputProps,
+  listOfPokemonsProps,
+  itemOfPokemonListProps,
+  dataPresenterProps,
+  liElementProps
+};
