@@ -1,9 +1,22 @@
 import axios from 'axios';
+import { capitalize } from '../utilities/utilities.js';
 import regeneratorRuntime from "regenerator-runtime";
 
 async function getPokemon(pokemonName) {
-  return await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
-    .then( response => response.data);
+  var obj = {};
+  
+  return await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`)
+    .then( response => {
+      obj.id = response.data.id;
+      obj.name = capitalize(response.data.name);
+      obj.baseExperience = response.data.base_experience;
+      obj.height = response.data.height;
+      obj.types = response.data.types;
+      obj.weight = response.data.weight;
+      obj.front_default = response.data.sprites.front_default;
+
+      return obj;
+    });
 }
 
 async function getAllPokemonNames() {
@@ -14,7 +27,7 @@ async function getAllPokemonNames() {
         allPokemons.push(
           {
             id: index,
-            name: element.name
+            name: capitalize(element.name)
           }
         );
       });
@@ -23,4 +36,28 @@ async function getAllPokemonNames() {
   return allPokemons;
 }
 
-export default { getPokemon, getAllPokemonNames };
+async function getAllPokemonNamesWithImages() {
+  var allPokemons = [];
+  const NUMBER_TO_LOAD = 4;
+
+  for(let i = 0; i < NUMBER_TO_LOAD; i++) {
+    await axios.get(`https://pokeapi.co/api/v2/pokemon/${i + 1}`)
+    .then( response => {
+      allPokemons.push(
+        {
+          id: i + 1,
+          name: capitalize(response.data.name),
+          image: response.data.sprites.front_default
+        }
+      );
+    });
+  }
+  
+  return allPokemons;
+}
+
+export default {
+  getPokemon,
+  getAllPokemonNames,
+  getAllPokemonNamesWithImages
+};

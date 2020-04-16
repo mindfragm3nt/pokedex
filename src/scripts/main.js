@@ -1,5 +1,6 @@
 import apiData from './api/apiData.js';
 import elementsProps from './domElementsProps/elementsProps.js';
+import cardPicker from './pokemonCardPicker.js';
 
 var isLoupeClicked = false;
 var element = document.getElementById('screen');
@@ -37,7 +38,7 @@ function hideNotMatchingItems() {
       let item = pokemonsList.children[i];
       let itemTextParagraph = item.querySelector('p');
 
-      if(!itemTextParagraph.innerText.includes(inputValue)) {
+      if(!itemTextParagraph.innerText.toLowerCase().includes(inputValue.toLowerCase())) {
         item.style.display = 'none';
         itemTextParagraph.style.display = 'none';
       } else {
@@ -126,14 +127,19 @@ async function unfocusSearchInput(event) {
   ) {
     var pokemonName;
     if(clickedPokemonItem.children[0] !== undefined) {
-      pokemonName = clickedPokemonItem.children[0].innerText
+      pokemonName = clickedPokemonItem.children[0].innerText;
     } else {
       pokemonName = clickedPokemonItem.innerText;
     }
 
+    console.log('pokemon Name', pokemonName);
+    
+
     let pokemon = await apiData.getPokemon(pokemonName).then(result => {
       return result;
     });
+
+    console.log('pokemon ====%%% ', pokemon);
 
     pokemonDataPresenter(pokemon);
   }
@@ -172,7 +178,7 @@ function pokemonDataPresenter(pokemonData) {
   const pokemonTypeList = document.createElement('ul');
 
   pokemonName.innerHTML = pokemonData.name;
-  pokemonImage.src = pokemonData.sprites.front_default;
+  pokemonImage.src = pokemonData.front_default;
   elementsProps.dataPresenterProps(pokemonName, pokemonImage, pokemonTypeLabel, pokemonTypeList)
 
   pokemonData.types.forEach((element) => {
