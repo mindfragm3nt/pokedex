@@ -52,7 +52,9 @@ function itemOfPokemonListProps(item, index) {
   item.style.borderBottom = '1px solid grey';
 }
 
-function dataPresenterProps(pokemonName, pokemonImage, pokemonTypeLabel, pokemonListType) {
+function dataPresenterProps(pokemonName, pokemonImage, pokemonTypeLabel,
+  pokemonListType, featuresLabel, basicExpirience, weight
+) {
   pokemonName.style.gridRow = '1 / 7';
   pokemonName.style.gridColumns = '1';
   pokemonName.style.color = 'white';
@@ -72,6 +74,20 @@ function dataPresenterProps(pokemonName, pokemonImage, pokemonTypeLabel, pokemon
   pokemonTypeLabel.style.color = 'white';
   pokemonTypeLabel.style.fontWeight = 'bold';
   pokemonTypeLabel.style.marginLeft = '7%';
+
+  basicExpirience.id = 'basic-exp-label';
+  basicExpirience.style.marginTop = '-30px';
+  basicExpirience.style.marginLeft = '20px';
+  basicExpirience.style.gridRow = '6';
+  basicExpirience.style.gridColumn = '5/9';
+  basicExpirience.style.fontWeight = 'bold';
+
+  weight.id = 'weight-label';
+  weight.style.marginTop = '-6px';
+  weight.style.marginLeft = '20px';
+  weight.style.gridRow = '6';
+  weight.style.gridColumn = '5/9';
+  weight.style.fontWeight = 'bold';
 
   pokemonListType.style.gridRow = '6';
   pokemonListType.style.gridColumn = '1';

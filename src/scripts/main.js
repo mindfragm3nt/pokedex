@@ -102,14 +102,21 @@ function clearAlreadyDisplayedPokemon() {
   const IMAGE = document.querySelector('#screen img');
   const TYPE_LABEL = document.querySelector('#screen h5');
   const TYPE_LIST = document.querySelector('#screen ul');
+  
+  const WEIGHT = document.querySelector('#screen #weight-label');
+  const BASIC_EXPIRIENCE = document.querySelector('#screen #basic-exp-label');
 
   if(IMAGE !== null &&
     TYPE_LABEL !== null &&
-    TYPE_LIST !== null
+    TYPE_LIST !== null &&
+    WEIGHT !== null &&
+    BASIC_EXPIRIENCE !== null
   ) {
     SCREEN.removeChild(IMAGE);
     SCREEN.removeChild(TYPE_LABEL);
     SCREEN.removeChild(TYPE_LIST);
+    SCREEN.removeChild(WEIGHT);
+    SCREEN.removeChild(BASIC_EXPIRIENCE);
   }
 
   if(POKEMON_NAME !== null && POKEMON_NAME.innerHTML !== '') {
@@ -216,9 +223,19 @@ function pokemonDataPresenter(pokemonData) {
   const POKEMON_TYPE_LABEL = document.createElement('h5');
   const POKEMON_TYPE_LIST = document.createElement('ul');
 
+  const FEATURES_LABEL = document.createElement('h5');
+  const BASIC_EXPIRIENCE = document.createElement('p');
+  const WEIGHT = document.createElement('p');
+
   POKEMON_NAME.innerHTML = pokemonData.name;
   POKEMON_IMAGE.src = pokemonData.front_default;
-  elementsProps.dataPresenterProps(POKEMON_NAME, POKEMON_IMAGE, POKEMON_TYPE_LABEL, POKEMON_TYPE_LIST)
+  BASIC_EXPIRIENCE.innerHTML = `Basic exp: ${pokemonData.baseExperience}`;
+  WEIGHT.innerHTML = `Weight: ${pokemonData.weight} lbs`;
+
+  elementsProps.dataPresenterProps(POKEMON_NAME, POKEMON_IMAGE,
+    POKEMON_TYPE_LABEL, POKEMON_TYPE_LIST, FEATURES_LABEL,
+    BASIC_EXPIRIENCE, WEIGHT
+  );
 
   pokemonData.types.forEach((element) => {
     let type = document.createElement('li');
@@ -232,6 +249,10 @@ function pokemonDataPresenter(pokemonData) {
   SCREEN.appendChild(POKEMON_IMAGE);
   SCREEN.appendChild(POKEMON_TYPE_LABEL);
   SCREEN.appendChild(POKEMON_TYPE_LIST);
+
+  // SCREEN.appendChild(FEATURES_LABEL);
+  SCREEN.appendChild(BASIC_EXPIRIENCE);
+  SCREEN.appendChild(WEIGHT);
 }
 
 function hidePokemonList() {

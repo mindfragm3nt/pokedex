@@ -11,7 +11,6 @@ async function getPokemon(pokemonName) {
       obj.id = response.data.id;
       obj.name = capitalize(response.data.name);
       obj.baseExperience = response.data.base_experience;
-      obj.height = response.data.height;
       obj.types = response.data.types;
       obj.weight = response.data.weight;
       obj.front_default = response.data.sprites.front_default;
