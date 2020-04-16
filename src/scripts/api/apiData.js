@@ -3,9 +3,10 @@ import { capitalize } from '../utilities/utilities.js';
 import regeneratorRuntime from "regenerator-runtime";
 
 async function getPokemon(pokemonName) {
+  pokemonName = pokemonName.toLowerCase();
   var obj = {};
   
-  return await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`)
+  return await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
     .then( response => {
       obj.id = response.data.id;
       obj.name = capitalize(response.data.name);
@@ -19,33 +20,23 @@ async function getPokemon(pokemonName) {
     });
 }
 
-async function getAllPokemonNames() {
+async function getAllPokemonNamesWithImages(startIndex) {
   var allPokemons = [];
-  await axios.get(`https://pokeapi.co/api/v2/pokemon`)
-    .then( response => {
-      response.data.results.forEach( (element, index) => {
-        allPokemons.push(
-          {
-            id: index,
-            name: capitalize(element.name)
-          }
-        );
-      });
-    });
+  var numberToLoad;
 
-  return allPokemons;
-}
+  if(startIndex < 149) {
+    numberToLoad = 4;
+  } else {
+    numberToLoad = 2;
+  }
 
-async function getAllPokemonNamesWithImages() {
-  var allPokemons = [];
-  const NUMBER_TO_LOAD = 4;
-
-  for(let i = 0; i < NUMBER_TO_LOAD; i++) {
-    await axios.get(`https://pokeapi.co/api/v2/pokemon/${i + 1}`)
+  var lastIndex = startIndex + numberToLoad;
+  for(let i = startIndex; i < lastIndex; i++) {
+    await axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`)
     .then( response => {
       allPokemons.push(
         {
-          id: i + 1,
+          id: response.data.id,
           name: capitalize(response.data.name),
           image: response.data.sprites.front_default
         }
@@ -58,6 +49,5 @@ async function getAllPokemonNamesWithImages() {
 
 export default {
   getPokemon,
-  getAllPokemonNames,
   getAllPokemonNamesWithImages
 };
