@@ -287,6 +287,7 @@ main #loupe-search #loupe-image-background #loupe-image {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
+  visibility: hidden;
 }
 
 #picker #screen-all-pokemons #right-arrow {
