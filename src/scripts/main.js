@@ -1,13 +1,16 @@
 import apiData from './api/apiData.js';
 import elementsProps from './domElementsProps/elementsProps.js';
-import cardPicker from './pokemonCardPicker.js';
+import { leftArrowClick, rightArrowClick } from './pokemonCardPicker.js';
+import { ALL_POKEMONS } from './api/allPokemonsArray.js';
 
-var isLoupeClicked = false;
-var element = document.getElementById('screen');
-var loupeElement = document.getElementById('loupe-image');
+const LOUPE_ELEMENT = document.getElementById('loupe-image');
+const LEFT_ARROW = document.getElementById('left-arrow');
+const RIGHT_ARROW = document.getElementById('right-arrow');
+
 var clickedPokemonItem = null;
+var isLoupeClicked = false;
 
-loupeElement.addEventListener('click', () => {
+LOUPE_ELEMENT.addEventListener('click', () => {
   if(isLoupeClicked === false) {
     clearAlreadyDisplayedPokemon();
     creatingSearchInput();
@@ -15,24 +18,66 @@ loupeElement.addEventListener('click', () => {
 });
 
 document.body.addEventListener('click', (event) => {
-  unfocusSearchInput(event);  
+  unfocusSearchInput(event);
+  allPokemonListComponent(event);
+});
+
+LEFT_ARROW.addEventListener('click', () => {
+  leftArrowClick();
+});
+
+RIGHT_ARROW.addEventListener('click', () => {
+  rightArrowClick();
 });
 
 function welcomeText() {
+  const SCREEN_ELEMENT = document.getElementById('screen');
   let welcomeText = document.createElement('p');
   welcomeText.id = 'welcome-text';
 
   elementsProps.welcomeTextProps(welcomeText);
-  element.appendChild(welcomeText);
+  SCREEN_ELEMENT.appendChild(welcomeText);
 }
+
 welcomeText();
 
+function allPokemonListComponent() {
+  var target = event.target;
+
+  var pokemonName;
+  if(target.id.substring(0,4) === 'all-') {
+    pokemonName = target.querySelector('p').innerHTML;
+    pokemonName = pokemonName.substring(pokemonName.indexOf(' ') + 1);
+
+    clearAlreadyDisplayedPokemon();
+    loadPokemonSelectedFromList(target, pokemonName);
+
+  } else if(target.parentNode.id.substring(0,4) === 'all-') {
+    target = target.parentNode;
+    pokemonName = target.querySelector('p').innerHTML;
+    pokemonName = pokemonName.substring(pokemonName.indexOf(' ') + 1);
+
+    clearAlreadyDisplayedPokemon();
+    loadPokemonSelectedFromList(target, pokemonName);
+  }
+}
+
+async function loadPokemonSelectedFromList(target, pokemonName) {
+  removeWelcomeText(target);
+
+  let pokemon = await apiData.getPokemon(pokemonName).then(result => {
+    return result;
+  });
+
+  pokemonDataPresenter(pokemon);
+}
+
 function hideNotMatchingItems() {
-  const searchInput = document.querySelector('input');
+  const SEARCH_INPUT = document.querySelector('input');
   var pokemonsList = document.getElementById('pokemons-list-wrapper');
   var childrenNumber = pokemonsList.childNodes.length;
 
-  searchInput.addEventListener('input', () => {
+  SEARCH_INPUT.addEventListener('input', () => {
     let inputValue = document.querySelector('input').value;
     for(let i = 0; i < childrenNumber; i++) {
       let item = pokemonsList.children[i];
@@ -50,69 +95,66 @@ function hideNotMatchingItems() {
 }
 
 function clearAlreadyDisplayedPokemon() {
-  const customInput = document.getElementById('custom-input');
-  const pokemonName = document.querySelector('#custom-input h3');
-  const screen = document.getElementById('screen');
+  const CUSTOM_INPUT = document.getElementById('custom-input');
+  const POKEMON_NAME = document.querySelector('#custom-input h3');
+  const SCREEN = document.getElementById('screen');
 
-  const image = document.querySelector('#screen img');
-  const typeLabel = document.querySelector('#screen h5');
-  const typeList = document.querySelector('#screen ul');
+  const IMAGE = document.querySelector('#screen img');
+  const TYPE_LABEL = document.querySelector('#screen h5');
+  const TYPE_LIST = document.querySelector('#screen ul');
 
-  if(image !== null &&
-      typeLabel !== null &&
-      typeList !== null
+  if(IMAGE !== null &&
+    TYPE_LABEL !== null &&
+    TYPE_LIST !== null
   ) {
-    screen.removeChild(image);
-    screen.removeChild(typeLabel);
-    screen.removeChild(typeList);
+    SCREEN.removeChild(IMAGE);
+    SCREEN.removeChild(TYPE_LABEL);
+    SCREEN.removeChild(TYPE_LIST);
   }
 
-  if(pokemonName !== null && pokemonName.innerHTML !== '') {
-    customInput.removeChild(pokemonName);
+  if(POKEMON_NAME !== null && POKEMON_NAME.innerHTML !== '') {
+    CUSTOM_INPUT.removeChild(POKEMON_NAME);
   }
 }
 
 function creatingSearchInput() {
-  const inputHolder = document.getElementById('custom-input');
-  const customInput = document.getElementById('custom-input').style; 
-  const searchInput = document.createElement('input');
-  elementsProps.searchInputProps(searchInput);
+  const INPUT_HOLDER = document.getElementById('custom-input');
+  const CUSTOM_INPUT = document.getElementById('custom-input').style; 
+  const SEARCH_INPUT = document.createElement('input');
+  elementsProps.searchInputProps(SEARCH_INPUT);
 
-  loupeElement.style.background = 'url("src/assets/images/loupe-dark.svg") no-repeat center center'
-  customInput.background = 'white';
-  customInput.padding = '5px';
-  customInput.borderRadius = '6px 0 0 6px';
+  LOUPE_ELEMENT.style.background = 'url("src/assets/images/loupe-dark.svg") no-repeat center center'
+  CUSTOM_INPUT.background = 'white';
+  CUSTOM_INPUT.padding = '5px';
+  CUSTOM_INPUT.borderRadius = '6px 0 0 6px';
   
   document.getElementById('loupe-image-background').style.background = 'white';
-  inputHolder.appendChild(searchInput);
-  searchInput.focus();
+  INPUT_HOLDER.appendChild(SEARCH_INPUT);
+  SEARCH_INPUT.focus();
 
   listOfPokemons();
   isLoupeClicked = true;
 }
 
-async function listOfPokemons() {
+function listOfPokemons() {
   if(isLoupeClicked === false) {
-    let pokemonsArray = await apiData.getAllPokemonNames()
-      .then( result => { return result; });
-    
-    const screen = document.getElementById('screen');
-    let wrapper = document.createElement('div');
-    elementsProps.listOfPokemonsProps(wrapper);
-    screen.appendChild(wrapper);
+    const SCREEN = document.getElementById('screen');
+    const WRAPPER = document.createElement('div');
+    elementsProps.listOfPokemonsProps(WRAPPER);
+    SCREEN.appendChild(WRAPPER);
 
-    const listWrapper = document.getElementById('pokemons-list-wrapper');
-    const pokemonsCount = pokemonsArray.length;
+    const LIST_WRAPPER = document.getElementById('pokemons-list-wrapper');
+    const POKEMONS_COUNT = ALL_POKEMONS.length;
 
-    for(let i = 0; i < pokemonsCount; i++) {
+    for(let i = 0; i < POKEMONS_COUNT; i++) {
       let item = document.createElement('div');
       
       elementsProps.itemOfPokemonListProps(item, i);
       item.innerHTML = `
         <p id="pokemon-item-paragraph-${i}"
-          style="padding-left: 10px; margin: 0">${pokemonsArray[i].name}</p>
+          style="padding-left: 10px; margin: 0">${ALL_POKEMONS[i].name}</p>
       `;
-      listWrapper.appendChild(item);
+      LIST_WRAPPER.appendChild(item);
     }
     hideNotMatchingItems();
   }
@@ -125,27 +167,22 @@ async function unfocusSearchInput(event) {
   if(clickedPokemonItem.id.substring(0,5) === 'item-' ||
     clickedPokemonItem.id.substring(0,23) === 'pokemon-item-paragraph-'
   ) {
-    var pokemonName;
+    let pokemonName;
     if(clickedPokemonItem.children[0] !== undefined) {
       pokemonName = clickedPokemonItem.children[0].innerText;
     } else {
       pokemonName = clickedPokemonItem.innerText;
     }
 
-    console.log('pokemon Name', pokemonName);
-    
-
     let pokemon = await apiData.getPokemon(pokemonName).then(result => {
       return result;
     });
-
-    console.log('pokemon ====%%% ', pokemon);
 
     pokemonDataPresenter(pokemon);
   }
 
   if(isLoupeClicked === true &&
-    event.target !== loupeElement && 
+    event.target !== LOUPE_ELEMENT && 
     event.target !== document.getElementById('custom-input') &&
     event.target !== document.getElementById('loupe-image-background') &&
     event.target !== document.getElementById('pokemons-list-wrapper') &&
@@ -158,55 +195,57 @@ async function unfocusSearchInput(event) {
 function removeWelcomeText(target) {
   if(document.getElementById('welcome-text') !== null &&
     (target.id.substring(0,5) === 'item-' ||
-      target.id.substring(0,23) === 'pokemon-item-paragraph-'
+      target.id.substring(0,23) === 'pokemon-item-paragraph-' ||
+      target.id.substring(0,4) === 'all-' ||
+      target.id.substring(0,9) === 'list-img-'
     )
   ) {
-    const screen = document.getElementById('screen');
-    const welcomeText = document.getElementById('welcome-text');
+    const SCREEN = document.getElementById('screen');
+    const WELCOME_TEXT = document.getElementById('welcome-text');
     
-    screen.removeChild(welcomeText);
+    SCREEN.removeChild(WELCOME_TEXT);
   }
 }
 
 function pokemonDataPresenter(pokemonData) {
-  const customInput = document.getElementById('custom-input');
-  const screen = document.getElementById('screen');
-  const pokemonName = document.createElement('h3');
+  const CUSTOM_INPUT = document.getElementById('custom-input');
+  const SCREEN = document.getElementById('screen');
+  const POKEMON_NAME = document.createElement('h3');
 
-  const pokemonImage = document.createElement('img');
-  const pokemonTypeLabel = document.createElement('h5');
-  const pokemonTypeList = document.createElement('ul');
+  const POKEMON_IMAGE = document.createElement('img');
+  const POKEMON_TYPE_LABEL = document.createElement('h5');
+  const POKEMON_TYPE_LIST = document.createElement('ul');
 
-  pokemonName.innerHTML = pokemonData.name;
-  pokemonImage.src = pokemonData.front_default;
-  elementsProps.dataPresenterProps(pokemonName, pokemonImage, pokemonTypeLabel, pokemonTypeList)
+  POKEMON_NAME.innerHTML = pokemonData.name;
+  POKEMON_IMAGE.src = pokemonData.front_default;
+  elementsProps.dataPresenterProps(POKEMON_NAME, POKEMON_IMAGE, POKEMON_TYPE_LABEL, POKEMON_TYPE_LIST)
 
   pokemonData.types.forEach((element) => {
     let type = document.createElement('li');
     type.innerHTML = element.type.name;
 
     elementsProps.liElementProps(type);
-    pokemonTypeList.appendChild(type);
+    POKEMON_TYPE_LIST.appendChild(type);
   });
 
-  customInput.appendChild(pokemonName);
-  screen.appendChild(pokemonImage);
-  screen.appendChild(pokemonTypeLabel);
-  screen.appendChild(pokemonTypeList);
+  CUSTOM_INPUT.appendChild(POKEMON_NAME);
+  SCREEN.appendChild(POKEMON_IMAGE);
+  SCREEN.appendChild(POKEMON_TYPE_LABEL);
+  SCREEN.appendChild(POKEMON_TYPE_LIST);
 }
 
 function hidePokemonList() {
-  const screen = document.getElementById('screen');
-  const customInput = document.getElementById('custom-input');
-  const input = document.querySelector('input');
-  const listWrapper = document.getElementById('pokemons-list-wrapper');
+  const SCREEN = document.getElementById('screen');
+  const CUSTOM_INPUT = document.getElementById('custom-input');
+  const INPUT = document.querySelector('input');
+  const LIST_WRAPPER = document.getElementById('pokemons-list-wrapper');
 
-  loupeElement.style.background = 'url("src/assets/images/loupe-light.svg") no-repeat center center'
-  customInput.style.background = 'transparent';
+  LOUPE_ELEMENT.style.background = 'url("src/assets/images/loupe-light.svg") no-repeat center center'
+  CUSTOM_INPUT.style.background = 'transparent';
   document.getElementById('loupe-image-background').style.background = 'transparent';
 
-  customInput.removeChild(input);
-  screen.removeChild(listWrapper);
+  CUSTOM_INPUT.removeChild(INPUT);
+  SCREEN.removeChild(LIST_WRAPPER);
 
   isLoupeClicked = false;
 }
